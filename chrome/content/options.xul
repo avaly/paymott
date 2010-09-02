@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://paymott/locale/overlay.dtd">
+<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo.biz Time Tracker preferences" width="300" height="200">
+  <prefpane id="pane1" label="Paymo.biz Time Tracker preferences">
+
+    <preferences>
+      <preference id="apikey1" name="extensions.paymott.apikey" type="string"/>
+      <preference id="username1" name="extensions.paymott.username" type="string"/>
+      <preference id="password1" name="extensions.paymott.password" type="string"/>
+	  <!-- note that this is only an ASCII string - use unichar for unicode strings -->
+    </preferences>
+
+    <label accesskey="A" control="apikey-input">API key</label>
+	<textbox id="apikey-input" preference="apikey1"/>
+
+	<label accesskey="U" control="username-input">Username</label>
+	<textbox id="username-input" preference="username1"/>
+
+	<label accesskey="P" control="password-input">Password</label>
+	<textbox id="password-input" preference="password1" type="password"/>
+
+  </prefpane>
+</prefwindow>

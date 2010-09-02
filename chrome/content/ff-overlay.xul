@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://paymott/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://paymott/locale/overlay.dtd">
+<overlay id="paymott-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script src="date.js"/>
+  <script src="overlay.js"/>
+  <script src="paymo-api.js"/>
+
+	<popupset id="mainPopupSet">
+		<menupopup id="paymott-menupopup-logout">
+			<menuitem label="Login" oncommand="paymott.onClickLogin()"/>
+		</menupopup>
+
+		<menupopup id="paymott-menupopup-projects" maxheight="600" onpopupshowing="paymott.test()">
+			<menuitem id="paymott-menuitem-loggedin" label="Logged in" disabled="true"/>
+			<menuitem id="paymott-menuitem-logout" label="Logout" oncommand="paymott.onClickLogout()"/>
+			<menuseparator/>
+			<menuitem id="paymott-menuitem-refresh" label="Refresh projects" oncommand="paymott.onClickRefresh()"/>
+			<menuseparator/>
+		</menupopup>
+
+		<menupopup id="paymott-menupopup-actions">
+			<menuitem id="paymott-menuitem-stop" label="Stop" oncommand="paymott.onClickStop()"/>
+			<menuitem id="paymott-menuitem-start" label="Start" oncommand="paymott.onClickStart()"/>
+		</menupopup>
+
+		<tooltip id="paymott-statuspanel-tooltip" orient="vertical" onpopupshowing="paymott.onTooltipShow()">
+			<label id="paymott-tooltip-default" value="Paymo.biz Time Tracker"/>
+			<description id="paymott-tooltip-user">Logged in to Paymo.biz as <span id="paymott-tooltip-username"></span></description>
+			<label id="paymott-tooltip-task" value=""/>
+			<label id="paymott-tooltip-time">Started at: <span id="paymott-tooltip-start"></span> - Time: <span id="paymott-tooltip-diff"></span></label>
+		</tooltip>
+	</popupset>
+
+	<statusbar id="status-bar">
+		<statusbarpanel 
+			id="paymott-statuspanel"
+			class="statusbarpanel-iconic"
+			label=""
+			image="chrome://paymott/skin/paymo-bw-16x16.png"
+			popup="paymott-menupopup-actions"
+			contextmenu="paymott-menupopup-logout"
+			tooltip="paymott-statuspanel-tooltip"/>
+	</statusbar>
+
+</overlay>

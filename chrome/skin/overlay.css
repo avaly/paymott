@@ -1,0 +1,13 @@
+#paymott-statuspanel {
+	padding: 0 5px;
+}
+
+#paymott-tooltip-username,
+#paymott-tooltip-task,
+#paymott-tooltip-diff {
+	font-weight: bold;
+}
+
+#paymott-statuspanel-tooltip span {
+    display: inline-block;
+}

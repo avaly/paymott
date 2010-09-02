@@ -1,0 +1,6 @@
+content   paymott                 chrome/content/
+skin      paymott   classic/1.0   chrome/skin/
+locale    paymott   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://paymott/content/ff-overlay.xul
