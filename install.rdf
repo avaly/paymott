@@ -9,7 +9,7 @@
 		<em:description>Time tracker using the Paymo.biz API</em:description>
 		<em:optionsURL>chrome://paymott/content/options.xul</em:optionsURL>
 		<em:iconURL>chrome:://paymott/skin/paymo-32x32.png</em:iconURL>
-		<em:homepageURL>http://github.org/avaly/paymott</em:homepageURL>
+		<em:homepageURL>http://github.com/avaly/paymott</em:homepageURL>
 
 		<!-- Firefox -->
 		<em:targetApplication>
