@@ -13,6 +13,9 @@ This is a typical workflow with this plugin:
 3. Left-click, Start
 4. When finished working on that task, left-click, Stop
 
+
+
 CHANGELOG
+
 * 1.0 - 2010-09-02: first release
 * 1.1 - 2010-09-03: multiple code changes required for Mozilla Add-ons approval
