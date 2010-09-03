@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://paymott/locale/overlay.dtd">
-<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo.biz Time Tracker preferences" width="300" height="200">
+<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo.biz Time Tracker preferences" width="300" height="200" ondialogaccept="return paymottOptions.onDialogAccept(this)">
   <prefpane id="pane1" label="Paymo.biz Time Tracker preferences">
 
     <preferences>
@@ -21,4 +21,9 @@
 	<textbox id="password-input" preference="password1" type="password"/>
 
   </prefpane>
+
+<script src="utils.js"/>
+<script src="password.js"/>
+<script src="options.js"/>
+
 </prefwindow>

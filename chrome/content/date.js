@@ -28,7 +28,7 @@ var dateFormat = function () {
 		var dF = dateFormat;
 
 		// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
-		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+		if (arguments.length == 1 && (date.constructor == String) && !/\d/.test(date)) {
 			mask = date;
 			date = undefined;
 		}
@@ -117,9 +117,4 @@ dateFormat.i18n = {
 		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
 	]
-};
-
-// For convenience...
-Date.prototype.format = function (mask, utc) {
-	return dateFormat(this, mask, utc);
 };

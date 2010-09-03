@@ -3,19 +3,23 @@
 <!DOCTYPE overlay SYSTEM "chrome://paymott/locale/overlay.dtd">
 <overlay id="paymott-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script src="date.js"/>
-  <script src="overlay.js"/>
-  <script src="paymo-api.js"/>
+	<script src="utils.js"/>
+	<script src="password.js"/>
+	<script src="overlay.js"/>
+	<script src="paymo-api.js"/>
+	<script src="date.js"/>
 
 	<popupset id="mainPopupSet">
 		<menupopup id="paymott-menupopup-logout">
+			<menuitem label="Options" oncommand="paymott.onClickOptions()"/>
 			<menuitem label="Login" oncommand="paymott.onClickLogin()"/>
 		</menupopup>
 
-		<menupopup id="paymott-menupopup-projects" maxheight="600" onpopupshowing="paymott.test()">
+		<menupopup id="paymott-menupopup-projects" maxheight="600">
 			<menuitem id="paymott-menuitem-loggedin" label="Logged in" disabled="true"/>
 			<menuitem id="paymott-menuitem-logout" label="Logout" oncommand="paymott.onClickLogout()"/>
 			<menuseparator/>
+			<menuitem label="Options" oncommand="paymott.onClickOptions()"/>
 			<menuitem id="paymott-menuitem-refresh" label="Refresh projects" oncommand="paymott.onClickRefresh()"/>
 			<menuseparator/>
 		</menupopup>

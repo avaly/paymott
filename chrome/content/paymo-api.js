@@ -41,15 +41,15 @@ var paymoAPI =
 
 	timeAdd: function(start, end)
 	{
-		var ts = start.format('yyyy-mm-dd HH:MM:ss');
-		var te = end.format('yyyy-mm-dd HH:MM:ss');
+		var ts = dateFormat(start, 'yyyy-mm-dd HH:MM:ss');
+		var te = dateFormat(end, 'yyyy-mm-dd HH:MM:ss');
 
 		this._method('entries.add', {
 			'start': ts,
 			'end': te,
 			'task_id': paymott.activeTask[0],
 			'added_manually': 0,
-			'description': 'from Paymo.biz Time Tracker Firefox add-on'
+			'description': 'from Paymo.biz Time Tracker Firefox add-on' // TODO customize
 		});
 	},
 
@@ -69,7 +69,7 @@ var paymoAPI =
 
 		this.requests[this.requests.length] = [method, url];
 
-//		paymott.log(this.requests);
+		paymott.log(this.requests);
 
 		if (this.authenticated || (method == 'auth.login'))
 		{
@@ -88,8 +88,8 @@ var paymoAPI =
 
 		var request = this.requests.shift();
 
-//		this.log(request);
-//		this.log(responseText);
+		this.log(request);
+		this.log(responseText);
 
 		var response = JSON.parse(responseText);
 
@@ -164,14 +164,21 @@ var paymoAPI =
 
 		if (this.requests.length > 1)
 		{
-			window.setTimeout(function(){
-				paymoAPI._request();
-			}, 30000);
+			var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+			timer.initWithCallback(paymoAPITimer, 30000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 		}
 	},
 	
 	log: function(msg)
 	{
-		paymott.log(msg);
+		paymottUtils.log(msg);
 	}
+};
+
+
+var paymoAPITimer =
+{
+	notify: function(timer){
+		paymoAPI._request();
+	},
 };
