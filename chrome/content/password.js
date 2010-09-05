@@ -45,7 +45,10 @@ var paymottPassword =
 		var loginNew = new this.loginInfo(this.hostname, this.formURL, this.httpRealm, username, password, '', ''); 		
 		if (loginOld)
 		{
-			this.passManager.modifyLogin(loginOld, loginNew); 
+			if (loginOld.password != loginNew.password)
+			{
+				this.passManager.modifyLogin(loginOld, loginNew); 
+			}
 		}
 		else
 		{

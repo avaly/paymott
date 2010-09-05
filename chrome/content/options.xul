@@ -1,24 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://paymott/skin/overlay.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://paymott/locale/overlay.dtd">
-<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo.biz Time Tracker preferences" width="300" height="200" ondialogaccept="return paymottOptions.onDialogAccept(this)">
-  <prefpane id="pane1" label="Paymo.biz Time Tracker preferences">
+<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker preferences" width="330" height="490" ondialogaccept="return paymottOptions.onDialogAccept(this)">
 
-    <preferences>
-      <preference id="apikey1" name="extensions.paymott.apikey" type="string"/>
-      <preference id="username1" name="extensions.paymott.username" type="string"/>
-      <preference id="password1" name="extensions.paymott.password" type="string"/>
-	  <!-- note that this is only an ASCII string - use unichar for unicode strings -->
-    </preferences>
+  <prefpane id="pane1" label="Paymo Time Tracker preferences">
 
-    <label accesskey="A" control="apikey-input">API key</label>
-	<textbox id="apikey-input" preference="apikey1"/>
+	<preferences>
+		<preference id="apikey1" name="extensions.paymott.apikey" type="string"/>
+		<preference id="username1" name="extensions.paymott.username" type="string"/>
+		<preference id="panelShow1" name="extensions.paymott.panelShow" type="bool"/>
+		<preference id="panelFormat1" name="extensions.paymott.panelFormat" type="string"/>
+		<preference id="iconAnimate1" name="extensions.paymott.iconAnimate" type="bool"/>
+		<preference id="timedescription1" name="extensions.paymott.timedescription" type="string"/>
+	</preferences>
 
-	<label accesskey="U" control="username-input">Username</label>
-	<textbox id="username-input" preference="username1"/>
+	<groupbox>
+		<caption label="Authentication"/>
 
-	<label accesskey="P" control="password-input">Password</label>
-	<textbox id="password-input" preference="password1" type="password"/>
+		<vbox>
+			<label accesskey="A" control="apikey-input">API key (found in Company Settings)</label>
+			<textbox id="apikey-input" preference="apikey1"/>
+		</vbox>
+
+		<hbox>
+			<vbox>
+				<label accesskey="U" control="username-input">Username</label>
+				<textbox id="username-input" preference="username1"/>
+			</vbox>
+			<vbox flex="1">
+				<label accesskey="P" control="password-input">Password</label>
+				<textbox id="password-input" type="password"/>
+			</vbox>
+		</hbox>
+	</groupbox>
+
+	<groupbox>
+		<caption label="Display"/>
+
+		<vbox>
+			<checkbox id="iconAnimate-input" preference="iconAnimate1" label="Animate the icon, when the counter is running"/>
+		</vbox>
+
+		<vbox>
+			<checkbox id="panelShow-input" preference="panelShow1" label="Show statusbar text next to icon"/>
+		</vbox>
+
+		<vbox>
+			<label accesskey="F" control="panelFormat-input">Statusbar text format</label>
+			<textbox id="panelFormat-input" preference="panelFormat1"/>
+			<description>Use the following variables in the format:</description>
+			<description>%p = Active project &amp; task</description>
+			<description>%t = Time in HH:MM format</description>
+			<description>%s = Time in HH:MM:SS format</description>
+		</vbox>
+	</groupbox>
+
+	<groupbox>
+		<caption label="API"/>
+
+		<vbox>
+			<label accesskey="D" control="timedescription-input">Time description set in the timesheet</label>
+			<textbox id="timedescription-input" preference="timedescription1"/>
+		</vbox>
+	</groupbox>
 
   </prefpane>
 

@@ -39,7 +39,7 @@ var paymoAPI =
 		this._method('projects.getList', { 'include_tasks': 1 });
 	},
 
-	timeAdd: function(start, end)
+	timeAdd: function(start, end, description)
 	{
 		var ts = dateFormat(start, 'yyyy-mm-dd HH:MM:ss');
 		var te = dateFormat(end, 'yyyy-mm-dd HH:MM:ss');
@@ -49,7 +49,7 @@ var paymoAPI =
 			'end': te,
 			'task_id': paymott.activeTask[0],
 			'added_manually': 0,
-			'description': 'from Paymo.biz Time Tracker Firefox add-on' // TODO customize
+			'description': description
 		});
 	},
 

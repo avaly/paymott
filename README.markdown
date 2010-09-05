@@ -19,3 +19,5 @@ CHANGELOG
 
 * 1.0 - 2010-09-02: first release
 * 1.1 - 2010-09-03: multiple code changes required for Mozilla Add-ons approval
+* 1.2 - 2010-09-05: NEW: customizable timesheet description, customizable statusbar text, disabling of icon animation
+			

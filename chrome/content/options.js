@@ -20,7 +20,14 @@ var paymottOptions =
 {
 	onLoad: function()
 	{
+		paymottUtils.log('Options.onLoad()');
+
 		paymottPassword.init();
+
+		var username = this.$('username-input').value;
+
+		var password = paymottPassword.get(username);
+		this.$('password-input').value = password;
 	},
 
 	onDialogAccept: function(a)

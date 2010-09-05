@@ -3,10 +3,10 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>paymo@agachi.name</em:id>
 		<em:type>2</em:type>
-		<em:name>Paymo.biz Time Tracker</em:name>
-		<em:version>1.1</em:version>
+		<em:name>Paymo Time Tracker</em:name>
+		<em:version>1.2</em:version>
 		<em:creator>Valentin Agachi</em:creator>
-		<em:description>Time tracker using the Paymo.biz API</em:description>
+		<em:description>Lightweight Time tracker using the Paymo.biz API</em:description>
 		<em:optionsURL>chrome://paymott/content/options.xul</em:optionsURL>
 		<em:iconURL>chrome://paymott/skin/paymo-32x32.png</em:iconURL>
 		<em:homepageURL>http://github.org/avaly/paymott</em:homepageURL>

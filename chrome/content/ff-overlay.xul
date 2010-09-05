@@ -25,15 +25,15 @@
 		</menupopup>
 
 		<menupopup id="paymott-menupopup-actions">
-			<menuitem id="paymott-menuitem-stop" label="Stop" oncommand="paymott.onClickStop()"/>
-			<menuitem id="paymott-menuitem-start" label="Start" oncommand="paymott.onClickStart()"/>
+			<menuitem id="paymott-menuitem-stop" label="Stop" oncommand="paymott.onClickStop()" disabled="true"/>
+			<menuitem id="paymott-menuitem-start" label="Start" oncommand="paymott.onClickStart()" disabled="true"/>
 		</menupopup>
 
 		<tooltip id="paymott-statuspanel-tooltip" orient="vertical" onpopupshowing="paymott.onTooltipShow()">
 			<label id="paymott-tooltip-default" value="Paymo.biz Time Tracker"/>
-			<description id="paymott-tooltip-user">Logged in to Paymo.biz as <span id="paymott-tooltip-username"></span></description>
-			<label id="paymott-tooltip-task" value=""/>
-			<label id="paymott-tooltip-time">Started at: <span id="paymott-tooltip-start"></span> - Time: <span id="paymott-tooltip-diff"></span></label>
+			<description id="paymott-tooltip-user" hidden="true">Logged in to Paymo.biz as <span id="paymott-tooltip-username"></span></description>
+			<label id="paymott-tooltip-task" value="" hidden="true"/>
+			<label id="paymott-tooltip-time" hidden="true">Started at: <span id="paymott-tooltip-start"></span> - Time: <span id="paymott-tooltip-diff"></span></label>
 		</tooltip>
 	</popupset>
 

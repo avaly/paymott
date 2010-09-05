@@ -36,7 +36,7 @@ var paymottUtils =
 		if (!this.sConsole || !this.debug)
 			return;
 
-		if ((msg.constructor != String) || (msg.indexOf('{') != 0))
+		if ((msg.constructor != String))
 			msg = JSON.stringify(msg);
 
 		this.sConsole.logStringMessage('PaymoTT: ' + msg);
