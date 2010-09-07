@@ -18,7 +18,7 @@
 
 var paymott =
 {
-	version: '1.2',
+	version: '1.3',
 	initialized: false,
 	preferences: {},
 	statusPanel: null,
@@ -40,7 +40,9 @@ var paymott =
 	timeStart: 0,
 
 	iconIndex: 1,
-	iconTimer: null,
+
+	timerTime: null,
+	timerStatus: null,
 
 	onLoad: function()
 	{
@@ -58,7 +60,8 @@ var paymott =
 	
 	onLoadAfter: function()
 	{
-		this.iconTimer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+		this.timerTime = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+		this.timerStatus = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
 
 		this.statusPanel = this.$('paymott-statuspanel');
 
@@ -86,6 +89,11 @@ var paymott =
 
 		paymottPassword.init();
 
+		if (this.preferences.autoLogin)
+		{
+			this.onClickLogin();
+		}
+
 		// TODO load dynamically paymo-api.js, date.js
 	},
 	
@@ -99,6 +107,7 @@ var paymott =
 		this.preferences = {
 			apikey: prefs.getCharPref("apikey"),
 			username: prefs.getCharPref("username"),
+			autoLogin: prefs.getBoolPref("autoLogin"),
 			panelShow: prefs.getBoolPref("panelShow"),
 			panelFormat: prefs.getCharPref("panelFormat"),
 			iconAnimate: prefs.getBoolPref("iconAnimate"),
@@ -126,7 +135,26 @@ var paymott =
 	{
 		var password = paymottPassword.get(this.preferences.username);
 
+		this.showStatus('Logging in ...');
+
 		paymoAPI.login(this.preferences.username, password);
+	},
+
+	doLogin: function()
+	{
+		this.log('doLogin()');
+
+		this.statusPanel.contextMenu = 'paymott-menupopup-projects';
+		this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
+
+		this.$('paymott-menuitem-loggedin').label = 'Logged in as: ' + this.preferences.username;
+
+		this.tooltipUser.hidden = false;
+		this.tooltipUsername.textContent = this.preferences.username;
+
+		this.showStatus('Logged in as ' + this.preferences.username);
+
+		paymoAPI.getProjects();
 	},
 
 	onClickLogout: function()
@@ -146,19 +174,9 @@ var paymott =
 		this.menuitemStart.disabled = true;
 	},
 
-	doLogin: function()
+	doLogout: function()
 	{
-		this.log('doLogin()');
-
-		this.statusPanel.contextMenu = 'paymott-menupopup-projects';
-		this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
-
-		this.$('paymott-menuitem-loggedin').label = 'Logged in as: ' + this.preferences.username;
-
-		this.tooltipUser.hidden = false;
-		this.tooltipUsername.textContent = this.preferences.username;
-
-		paymoAPI.getProjects();
+		this.showStatus('Logged out');
 	},
 
 	onClickRefresh: function()
@@ -221,6 +239,8 @@ var paymott =
 
 		this.menuitemStop.disabled = true;
 		this.menuitemStart.disabled = false;
+	
+		this.showStatus('Active task: ' + this.activeTask[1]);
 	},
 
 	onClickStart: function()
@@ -240,12 +260,14 @@ var paymott =
 		this.menuitemStart.disabled = true;
 
 		this.iconIndex = 1;
-		this.iconTimer.init(paymottTimer, 1000, Components.interfaces.nsITimer.TYPE_REPEATING_PRECISE);
+		this.timerTime.init(paymottTimer, 1000, Components.interfaces.nsITimer.TYPE_REPEATING_PRECISE);
 	},
 
 	onClickStop: function()
 	{
 		this.active = false;
+
+		this.showStatus('Recording time ...');
 
 		this.timeEnd = new Date();
 
@@ -258,7 +280,13 @@ var paymott =
 		this.menuitemStop.disabled = true;
 		this.menuitemStart.disabled = false;
 
-		this.iconTimer.cancel();
+		this.timerTime.cancel();
+	},
+
+	doTimeAdd: function()
+	{
+		var diff = this.timeDiff(this.timeStart, this.timeEnd, true);
+		this.showStatus('Time recorded: ' + diff);
 	},
 	
 	onTimerIcon: function()
@@ -286,8 +314,6 @@ var paymott =
 		t = t.replace('%s', diff);
 		t = t.replace('%t', diff.substr(0, 5));
 
-		this.log(t);
-
 		return t;
 	},
 
@@ -309,11 +335,26 @@ var paymott =
 		}
 	},
 
-	onDialogAccept: function(a)
+	showStatus: function(msg)
 	{
-		this.log('onDialogAccept()');
-		this.log(a);
-		return true;
+		this.statusPanel.className = 'statusbarpanel-iconic-text';
+		this.statusPanel.label = msg;
+
+		this.timerStatus.cancel();
+
+		var _event = {
+			notify: function(){
+				paymott.clearStatus();
+			}
+		};
+
+		this.timerStatus.initWithCallback(_event, 3000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+	},
+
+	clearStatus: function()
+	{
+		this.statusPanel.className = 'statusbarpanel-iconic';
+		this.statusPanel.label = '';
 	},
 
 	log: function(msg)

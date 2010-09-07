@@ -2,13 +2,14 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://paymott/skin/overlay.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://paymott/locale/overlay.dtd">
-<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker preferences" width="330" height="490" ondialogaccept="return paymottOptions.onDialogAccept(this)">
+<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker preferences" width="330" height="510" ondialogaccept="return paymottOptions.onDialogAccept(this)">
 
   <prefpane id="pane1" label="Paymo Time Tracker preferences">
 
 	<preferences>
 		<preference id="apikey1" name="extensions.paymott.apikey" type="string"/>
 		<preference id="username1" name="extensions.paymott.username" type="string"/>
+		<preference id="autoLogin1" name="extensions.paymott.autoLogin" type="bool"/>
 		<preference id="panelShow1" name="extensions.paymott.panelShow" type="bool"/>
 		<preference id="panelFormat1" name="extensions.paymott.panelFormat" type="string"/>
 		<preference id="iconAnimate1" name="extensions.paymott.iconAnimate" type="bool"/>
@@ -33,6 +34,10 @@
 				<textbox id="password-input" type="password"/>
 			</vbox>
 		</hbox>
+
+		<vbox>
+			<checkbox id="autoLogin-input" preference="autoLogin1" label="Login automatically on browser start"/>
+		</vbox>
 	</groupbox>
 
 	<groupbox>

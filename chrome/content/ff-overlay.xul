@@ -30,7 +30,7 @@
 		</menupopup>
 
 		<tooltip id="paymott-statuspanel-tooltip" orient="vertical" onpopupshowing="paymott.onTooltipShow()">
-			<label id="paymott-tooltip-default" value="Paymo.biz Time Tracker"/>
+			<label id="paymott-tooltip-default" value="Paymo Time Tracker"/>
 			<description id="paymott-tooltip-user" hidden="true">Logged in to Paymo.biz as <span id="paymott-tooltip-username"></span></description>
 			<label id="paymott-tooltip-task" value="" hidden="true"/>
 			<label id="paymott-tooltip-time" hidden="true">Started at: <span id="paymott-tooltip-start"></span> - Time: <span id="paymott-tooltip-diff"></span></label>

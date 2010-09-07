@@ -1,5 +1,6 @@
 pref("extensions.paymott.apikey", "");
 pref("extensions.paymott.username", "");
+pref("extensions.paymott.autoLogin", true);
 pref("extensions.paymott.panelShow", true);
 pref("extensions.paymott.panelFormat", "%p - %t");
 pref("extensions.paymott.iconAnimate", true);

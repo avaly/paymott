@@ -111,6 +111,14 @@ var paymoAPI =
 
 			break;		
 
+		case 'auth.logout':
+
+			this.authenticated = false;
+
+			paymott.doLogout();
+
+			break;		
+
 		case 'projects.getList':
 
 			var projects = [];
@@ -124,6 +132,12 @@ var paymoAPI =
 			}
 
 			paymott.doProjects(projects);
+
+			break;
+		
+		case 'entries.add':
+
+			paymott.doTimeAdd();
 
 			break;
 		}
