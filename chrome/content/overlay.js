@@ -18,7 +18,7 @@
 
 var paymott =
 {
-	version: '1.3',
+	version: '1.3.1',
 	initialized: false,
 	preferences: {},
 	statusPanel: null,
@@ -252,8 +252,7 @@ var paymott =
 		this.statusPanel.image = 'chrome://paymott/skin/clock-active-1.png';
 		if (this.preferences.panelShow)
 		{
-			this.statusPanel.className = 'statusbarpanel-iconic-text';
-			this.statusPanel.label = this.getPanelText();
+			this.showPanelText(this.getPanelText());
 		}
 
 		this.menuitemStop.disabled = false;
@@ -274,8 +273,7 @@ var paymott =
 		paymoAPI.timeAdd(this.timeStart, this.timeEnd, this.preferences.timeDescription);
 
 		this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
-		this.statusPanel.className = 'statusbarpanel-iconic';
-		this.statusPanel.label = '';
+		this.clearPanelText();
 
 		this.menuitemStop.disabled = true;
 		this.menuitemStart.disabled = false;
@@ -301,7 +299,7 @@ var paymott =
 
 		if (this.preferences.panelShow)
 		{
-			this.statusPanel.label = this.getPanelText();
+			this.showPanelText(this.getPanelText());
 		}
 	},
 	
@@ -337,21 +335,26 @@ var paymott =
 
 	showStatus: function(msg)
 	{
-		this.statusPanel.className = 'statusbarpanel-iconic-text';
-		this.statusPanel.label = msg;
+		this.showPanelText(msg);
 
 		this.timerStatus.cancel();
 
 		var _event = {
 			notify: function(){
-				paymott.clearStatus();
+				paymott.clearPanelText();
 			}
 		};
 
 		this.timerStatus.initWithCallback(_event, 3000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 	},
+	
+	showPanelText: function(msg)
+	{
+		this.statusPanel.className = 'statusbarpanel-iconic-text';
+		this.statusPanel.label = msg;
+	},
 
-	clearStatus: function()
+	clearPanelText: function()
 	{
 		this.statusPanel.className = 'statusbarpanel-iconic';
 		this.statusPanel.label = '';
