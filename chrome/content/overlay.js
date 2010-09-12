@@ -16,9 +16,13 @@
 	Copyright (C) 2010, Valentin Agachi. All Rights Reserved.
 */
 
+// already defined
+//const Cc = Components.classes;
+//const Ci = Components.interfaces;
+
 var paymott =
 {
-	version: '1.3.1',
+	version: '1.3.2',
 	initialized: false,
 	preferences: {},
 	statusPanel: null,
@@ -48,8 +52,8 @@ var paymott =
 	{
 		this.strings = document.getElementById("paymott-strings");
 
-		var timerInit = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
-		timerInit.initWithCallback(paymottTimer, 1000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+		var timerInit = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);  
+		timerInit.initWithCallback(paymottTimer, 1000, Ci.nsITimer.TYPE_ONE_SHOT);
 	},
 
 	onUnload: function()
@@ -60,8 +64,8 @@ var paymott =
 	
 	onLoadAfter: function()
 	{
-		this.timerTime = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
-		this.timerStatus = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+		this.timerTime = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);  
+		this.timerStatus = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);  
 
 		this.statusPanel = this.$('paymott-statuspanel');
 
@@ -101,7 +105,7 @@ var paymott =
 	{
 		this.log('loadPreferences()');
 
-		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+		var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
 		prefs = prefs.getBranch("extensions.paymott.");
 
 		this.preferences = {
@@ -259,7 +263,7 @@ var paymott =
 		this.menuitemStart.disabled = true;
 
 		this.iconIndex = 1;
-		this.timerTime.init(paymottTimer, 1000, Components.interfaces.nsITimer.TYPE_REPEATING_PRECISE);
+		this.timerTime.init(paymottTimer, 1000, Ci.nsITimer.TYPE_REPEATING_PRECISE);
 	},
 
 	onClickStop: function()
@@ -328,7 +332,7 @@ var paymott =
 		}
 		if (this.active)
 		{
-			this.tooltipStart.textContent = dateFormat(this.timeStart, 'HH:MM');
+			this.tooltipStart.textContent = paymottDate.format(this.timeStart, 'HH:MM');
 			this.tooltipDiff.textContent = this.timeDiff(this.timeStart, new Date(), true);
 		}
 	},
@@ -345,7 +349,7 @@ var paymott =
 			}
 		};
 
-		this.timerStatus.initWithCallback(_event, 3000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+		this.timerStatus.initWithCallback(_event, 3000, Ci.nsITimer.TYPE_ONE_SHOT);
 	},
 	
 	showPanelText: function(msg)
@@ -407,9 +411,9 @@ var paymottTimer =
 var paymottPreferencesObserver =
 {
 	register: function(){
-		var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+		var prefService = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
 		this._branch = prefService.getBranch("extensions.paymott.");
-		this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+		this._branch.QueryInterface(Ci.nsIPrefBranch2);
 		this._branch.addObserver("", this, false);
 	},
 

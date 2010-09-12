@@ -27,16 +27,9 @@ var paymottPassword =
 
 	init: function()
 	{
-		this.passManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);  
-		this.loginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1", Components.interfaces.nsILoginInfo, "init");
+		this.passManager = Cc["@mozilla.org/login-manager;1"].getService(Ci.nsILoginManager);  
+		this.loginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1", Ci.nsILoginInfo, "init");
 	},
-
-/*
-	test: function(){
-		this.add('username1', Date.now());
-		paymott.log('get(username1): ' + this.get('username1'));
-	},
-*/
 
 	add: function(username, password)
 	{

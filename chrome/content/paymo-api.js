@@ -41,8 +41,8 @@ var paymoAPI =
 
 	timeAdd: function(start, end, description)
 	{
-		var ts = dateFormat(start, 'yyyy-mm-dd HH:MM:ss');
-		var te = dateFormat(end, 'yyyy-mm-dd HH:MM:ss');
+		var ts = paymottDate.format(start, 'yyyy-mm-dd HH:MM:ss');
+		var te = paymottDate.format(end, 'yyyy-mm-dd HH:MM:ss');
 
 		this._method('entries.add', {
 			'start': ts,
