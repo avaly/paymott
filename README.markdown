@@ -22,5 +22,5 @@ CHANGELOG
 * 1.2 - 2010-09-05: NEW: customizable timesheet description, customizable statusbar text, disabling of icon animation
 * 1.3 - 2010-09-07: NEW: auto-login option, status messages shown near icon for a few seconds after various commands
 * 1.3.1 - 2010-09-08: FIX: status messages
-* 1.3.2 - 2010-09-12: code changes required for Mozilla Add-ons approval
+* 1.3.3 - 2010-09-30: code changes required for Mozilla Add-ons approval
 			
