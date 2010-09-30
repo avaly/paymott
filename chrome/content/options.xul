@@ -44,7 +44,7 @@
 		<caption label="Display"/>
 
 		<vbox>
-			<checkbox id="iconAnimate-input" preference="iconAnimate1" label="Animate the icon, when the counter is running"/>
+			<checkbox id="iconAnimate-input" preference="iconAnimate1" label="Animate the icon, when the timer is running"/>
 		</vbox>
 
 		<vbox>

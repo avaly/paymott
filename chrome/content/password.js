@@ -27,13 +27,13 @@ var paymottPassword =
 
 	init: function()
 	{
-		this.passManager = Cc["@mozilla.org/login-manager;1"].getService(Ci.nsILoginManager);  
-		this.loginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1", Ci.nsILoginInfo, "init");
+		this.passManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);  
+		this.loginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1", Components.interfaces.nsILoginInfo, "init");
 	},
 
 	add: function(username, password)
 	{
-		this.log('Password.add(' + username + ', password hidden)');
+		this.log('Password.add(' + username + ', ********)');
 		var loginOld= this.getLogin(username);
 		var loginNew = new this.loginInfo(this.hostname, this.formURL, this.httpRealm, username, password, '', ''); 		
 		if (loginOld)

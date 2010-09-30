@@ -23,9 +23,9 @@ var paymottUtils =
 
 	onLoad: function()
 	{
-		this.sConsole = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
+		this.sConsole = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 
-		var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
+		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 		prefs = prefs.getBranch("extensions.paymott.");
 
 		this.debug = prefs.getBoolPref("debug");

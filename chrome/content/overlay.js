@@ -22,7 +22,7 @@
 
 var paymott =
 {
-	version: '1.3.2',
+	version: '1.3.3',
 	initialized: false,
 	preferences: {},
 	statusPanel: null,
