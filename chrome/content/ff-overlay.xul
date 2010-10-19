@@ -33,7 +33,7 @@
 			<label id="paymott-tooltip-default" value="Paymo Time Tracker"/>
 			<description id="paymott-tooltip-user" hidden="true">Logged in to Paymo.biz as <span id="paymott-tooltip-username"></span></description>
 			<label id="paymott-tooltip-task" value="" hidden="true"/>
-			<label id="paymott-tooltip-time" hidden="true">Started at: <span id="paymott-tooltip-start"></span> - Time: <span id="paymott-tooltip-diff"></span></label>
+			<label id="paymott-tooltip-time" hidden="true">Time: <span id="paymott-tooltip-diff"></span></label>
 		</tooltip>
 	</popupset>
 

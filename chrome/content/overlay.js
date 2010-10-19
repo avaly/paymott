@@ -16,13 +16,13 @@
 	Copyright (C) 2010, Valentin Agachi. All Rights Reserved.
 */
 
-// already defined
+// already defined ?
 //const Cc = Components.classes;
 //const Ci = Components.interfaces;
 
 var paymott =
 {
-	version: '1.3.3',
+	version: '1.3.4',
 	initialized: false,
 	preferences: {},
 	statusPanel: null,
@@ -36,12 +36,12 @@ var paymott =
 	tooltipUsername: null,
 	tooltipTask: null,
 	tooltipTime: null,
-	tooltipStart: null,
 	tooltipDiff: null,
 	
 	activeTask: null,
 	active: false,
 	timeStart: 0,
+	panelText: '',
 
 	iconIndex: 1,
 
@@ -80,7 +80,6 @@ var paymott =
 		this.tooltipUsername = this.$('paymott-tooltip-username');
 		this.tooltipTask = this.$('paymott-tooltip-task');
 		this.tooltipTime = this.$('paymott-tooltip-time');
-		this.tooltipStart = this.$('paymott-tooltip-start');
 		this.tooltipDiff = this.$('paymott-tooltip-diff');
 
 		paymottPreferencesObserver.register();
@@ -245,6 +244,11 @@ var paymott =
 		this.menuitemStart.disabled = false;
 	
 		this.showStatus('Active task: ' + this.activeTask[1]);
+
+		if (this.preferences.panelShow && this.preferences.panelFormat.match(/%p/))
+		{
+			this.panelText = this.getPanelText('%p');
+		}
 	},
 
 	onClickStart: function()
@@ -277,12 +281,16 @@ var paymott =
 		paymoAPI.timeAdd(this.timeStart, this.timeEnd, this.preferences.timeDescription);
 
 		this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
-		this.clearPanelText();
 
 		this.menuitemStop.disabled = true;
 		this.menuitemStart.disabled = false;
 
 		this.timerTime.cancel();
+
+		if (this.preferences.panelShow && this.preferences.panelFormat.match(/%p/))
+		{
+			this.panelText = this.getPanelText('%p');
+		}
 	},
 
 	doTimeAdd: function()
@@ -303,18 +311,23 @@ var paymott =
 
 		if (this.preferences.panelShow)
 		{
-			this.showPanelText(this.getPanelText());
+			this.panelText = this.getPanelText();
+			this.showPanelText(this.panelText);
 		}
 	},
 	
-	getPanelText: function()
+	getPanelText: function(f)
 	{
-		var t = this.preferences.panelFormat;
+		var t = (f ? f : this.preferences.panelFormat);
 
 		t = t.replace('%p', this.activeTask[1]);
-		var diff = this.timeDiff(this.timeStart, new Date(), true);
-		t = t.replace('%s', diff);
-		t = t.replace('%t', diff.substr(0, 5));
+
+		if (this.active)
+		{
+			var diff = this.timeDiff(this.timeStart, new Date(), true);
+			t = t.replace('%s', diff);
+			t = t.replace('%t', diff.substr(0, 5));
+		}
 
 		return t;
 	},
@@ -332,7 +345,6 @@ var paymott =
 		}
 		if (this.active)
 		{
-			this.tooltipStart.textContent = paymottDate.format(this.timeStart, 'HH:MM');
 			this.tooltipDiff.textContent = this.timeDiff(this.timeStart, new Date(), true);
 		}
 	},
@@ -360,8 +372,11 @@ var paymott =
 
 	clearPanelText: function()
 	{
-		this.statusPanel.className = 'statusbarpanel-iconic';
-		this.statusPanel.label = '';
+		if (!this.panelText.length)
+		{
+			this.statusPanel.className = 'statusbarpanel-iconic';
+		}
+		this.statusPanel.label = this.panelText;
 	},
 
 	log: function(msg)

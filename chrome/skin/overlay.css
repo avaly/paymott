@@ -12,9 +12,6 @@
     display: inline-block;
 }
 
-#paymott-preferences groupbox {
-	padding: 5px 10px 10px;
+#paymott-preferences vbox {
+	padding: 2px 0;
 }
-	#paymott-preferences vbox {
-		padding: 2px 0;
-	}

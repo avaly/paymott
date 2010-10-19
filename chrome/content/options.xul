@@ -2,7 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://paymott/skin/overlay.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://paymott/locale/overlay.dtd">
-<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker preferences" width="330" height="510" ondialogaccept="return paymottOptions.onDialogAccept(this)">
+<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker preferences" width="450" height="350" ondialogaccept="return paymottOptions.onDialogAccept(this)">
 
   <prefpane id="pane1" label="Paymo Time Tracker preferences">
 
@@ -16,59 +16,71 @@
 		<preference id="timedescription1" name="extensions.paymott.timedescription" type="string"/>
 	</preferences>
 
-	<groupbox>
-		<caption label="Authentication"/>
+	<tabbox>
+		<tabs>
+			<tab label="Authentication"/>
+			<tab label="Display"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel id="paymott-tabpanel-auth" orient="vertical">
 
-		<vbox>
-			<label accesskey="A" control="apikey-input">API key (found in Company Settings)</label>
-			<textbox id="apikey-input" preference="apikey1"/>
-		</vbox>
+				<vbox>
+					<label accesskey="A" control="apikey-input">API key (found in Company Settings)</label>
+					<textbox id="apikey-input" preference="apikey1"/>
+				</vbox>
 
-		<hbox>
-			<vbox>
-				<label accesskey="U" control="username-input">Username</label>
-				<textbox id="username-input" preference="username1"/>
-			</vbox>
-			<vbox flex="1">
-				<label accesskey="P" control="password-input">Password</label>
-				<textbox id="password-input" type="password"/>
-			</vbox>
-		</hbox>
+				<hbox>
+					<vbox flex="1">
+						<label accesskey="U" control="username-input">Username</label>
+						<textbox id="username-input" preference="username1"/>
+					</vbox>
+					<vbox flex="1">
+						<label accesskey="P" control="password-input">Password</label>
+						<textbox id="password-input" type="password"/>
+					</vbox>
+				</hbox>
 
-		<vbox>
-			<checkbox id="autoLogin-input" preference="autoLogin1" label="Login automatically on browser start"/>
-		</vbox>
-	</groupbox>
+				<vbox>
+					<checkbox id="autoLogin-input" preference="autoLogin1" label="Login automatically on browser start"/>
+				</vbox>
 
-	<groupbox>
-		<caption label="Display"/>
+				<vbox>
+					<label accesskey="D" control="timedescription-input">Time description set in the timesheet</label>
+					<textbox id="timedescription-input" preference="timedescription1"/>
+				</vbox>
 
-		<vbox>
-			<checkbox id="iconAnimate-input" preference="iconAnimate1" label="Animate the icon, when the timer is running"/>
-		</vbox>
+				<vbox>
+					<label>Disclaimer: Due to the Paymo.biz API implementation, the login to the API is done through a simple HTTP GET request, sending your username, password and API key in plaintext.</label>
+				</vbox>
 
-		<vbox>
-			<checkbox id="panelShow-input" preference="panelShow1" label="Show statusbar text next to icon"/>
-		</vbox>
+				<vbox>
+					<label>...</label>
+				</vbox>
 
-		<vbox>
-			<label accesskey="F" control="panelFormat-input">Statusbar text format</label>
-			<textbox id="panelFormat-input" preference="panelFormat1"/>
-			<description>Use the following variables in the format:</description>
-			<description>%p = Active project &amp; task</description>
-			<description>%t = Time in HH:MM format</description>
-			<description>%s = Time in HH:MM:SS format</description>
-		</vbox>
-	</groupbox>
+			</tabpanel>
 
-	<groupbox>
-		<caption label="API"/>
+			<tabpanel id="paymott-tabpanel-display" orient="vertical">
 
-		<vbox>
-			<label accesskey="D" control="timedescription-input">Time description set in the timesheet</label>
-			<textbox id="timedescription-input" preference="timedescription1"/>
-		</vbox>
-	</groupbox>
+				<vbox>
+					<checkbox id="iconAnimate-input" preference="iconAnimate1" label="Animate the icon, when the timer is running"/>
+				</vbox>
+
+				<vbox>
+					<checkbox id="panelShow-input" preference="panelShow1" label="Show statusbar text next to icon"/>
+				</vbox>
+
+				<vbox>
+					<label accesskey="F" control="panelFormat-input">Statusbar text format</label>
+					<textbox id="panelFormat-input" preference="panelFormat1"/>
+					<description>Use the following variables in the format:</description>
+					<description>%p = Active project &amp; task</description>
+					<description>%t = Time in HH:MM format</description>
+					<description>%s = Time in HH:MM:SS format</description>
+				</vbox>
+			
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
 
   </prefpane>
 
