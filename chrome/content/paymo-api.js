@@ -57,7 +57,7 @@ var paymoAPI =
 
 	_method: function(method, args)
 	{
-		var url = 'http://api.paymo.biz/service/paymo.' + method + '?api_key=' + this.apikey + '&format=json';
+		var url = 'https://api.paymo.biz/service/paymo.' + method + '?api_key=' + this.apikey + '&format=json';
 		if (this.authenticated && this.authToken.length)
 		{
 			url += '&auth_token=' + this.authToken;

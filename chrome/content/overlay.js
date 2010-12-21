@@ -22,7 +22,7 @@
 
 var paymott =
 {
-	version: '1.3.4',
+	version: '1.3.5',
 	initialized: false,
 	preferences: {},
 	statusPanel: null,
@@ -179,6 +179,7 @@ var paymott =
 
 	doLogout: function()
 	{
+		this.panelText = '';
 		this.showStatus('Logged out');
 	},
 
