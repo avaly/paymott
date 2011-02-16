@@ -13,34 +13,34 @@
 
 	The Initial Developer of the Original Code is Valentin Agachi, http://agachi.name/
 
-	Copyright (C) 2010, Valentin Agachi. All Rights Reserved.
+	Copyright (C) 2010-2011, Valentin Agachi. All Rights Reserved.
 */
-
-// already defined ?
-//const Cc = Components.classes;
-//const Ci = Components.interfaces;
 
 var paymott =
 {
-	version: '1.3.5',
+	version: '1.4.0',
 	initialized: false,
+	prefsBranch: null,
 	preferences: {},
 	statusPanel: null,
 	popupProjects: null,
 
-	menuitemStop: null,
-	menuitemStart: null,
+	miStop: null,
+	miStart: null,
 	
-	tooltipDefault: null,
-	tooltipUser: null,
-	tooltipUsername: null,
-	tooltipTask: null,
-	tooltipTime: null,
-	tooltipDiff: null,
+	ttDefault: null,
+	ttUser: null,
+	ttUsername: null,
+	ttTask: null,
+	ttTime: null,
+	ttDiff: null,
 	
 	activeTask: null,
 	active: false,
+	paused: false,
 	timeStart: 0,
+	timePaused: 0,
+	secondsPaused: 0,
 	panelText: '',
 
 	iconIndex: 1,
@@ -52,7 +52,7 @@ var paymott =
 	{
 		this.strings = document.getElementById("paymott-strings");
 
-		var timerInit = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);  
+		var timerInit = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
 		timerInit.initWithCallback(paymottTimer, 1000, Ci.nsITimer.TYPE_ONE_SHOT);
 	},
 
@@ -64,27 +64,38 @@ var paymott =
 	
 	onLoadAfter: function()
 	{
-		this.timerTime = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);  
-		this.timerStatus = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);  
+		this.timerTime = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+		this.timerStatus = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
 
 		this.statusPanel = this.$('paymott-statuspanel');
 
 		this.popupProjects = this.$('paymott-menupopup-projects');
 
-		this.menuitemStop = this.$('paymott-menuitem-stop');
-		this.menuitemStart = this.$('paymott-menuitem-start');
+		this.miStop = this.$('paymott-menuitem-stop');
+		this.miPause = this.$('paymott-menuitem-pause');
+		this.miStart = this.$('paymott-menuitem-start');
 
 		this.$('paymott-tooltip-default').value += ' ver.' + this.version;
 
-		this.tooltipUser = this.$('paymott-tooltip-user');
-		this.tooltipUsername = this.$('paymott-tooltip-username');
-		this.tooltipTask = this.$('paymott-tooltip-task');
-		this.tooltipTime = this.$('paymott-tooltip-time');
-		this.tooltipDiff = this.$('paymott-tooltip-diff');
+		this.ttUser = this.$('paymott-tooltip-user');
+		this.ttUsername = this.$('paymott-tooltip-username');
+		this.ttTask = this.$('paymott-tooltip-task');
+		this.ttTime = this.$('paymott-tooltip-time');
+		this.ttDiff = this.$('paymott-tooltip-diff');
 
 		paymottPreferencesObserver.register();
 
+		this.prefsBranch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.paymott.");
+
 		this.loadPreferences();
+
+		if (this.preferences.fastStart)
+		{
+			this.statusPanel.setAttribute('popup', '');
+			this.statusPanel.addEventListener('click', function(ev){
+				paymott.onPanelClick(ev);
+			}, false);
+		}
 
 		this.initialized = true;
 
@@ -104,29 +115,45 @@ var paymott =
 	{
 		this.log('loadPreferences()');
 
-		var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
-		prefs = prefs.getBranch("extensions.paymott.");
-
 		this.preferences = {
-			apikey: prefs.getCharPref("apikey"),
-			username: prefs.getCharPref("username"),
-			autoLogin: prefs.getBoolPref("autoLogin"),
-			panelShow: prefs.getBoolPref("panelShow"),
-			panelFormat: prefs.getCharPref("panelFormat"),
-			iconAnimate: prefs.getBoolPref("iconAnimate"),
-			timeDescription: prefs.getCharPref("timeDescription")
+			apikey: this.prefsBranch.getCharPref("apikey"),
+			username: this.prefsBranch.getCharPref("username"),
+			autoLogin: this.prefsBranch.getBoolPref("autoLogin"),
+			panelShow: this.prefsBranch.getBoolPref("panelShow"),
+			panelFormat: this.prefsBranch.getCharPref("panelFormat"),
+			iconAnimate: this.prefsBranch.getBoolPref("iconAnimate"),
+			rememberTask: this.prefsBranch.getBoolPref("rememberTask"),
+			fastStart: this.prefsBranch.getBoolPref("fastStart"),
+			timeDescription: this.prefsBranch.getCharPref("timeDescription"),
+			lastTask: this.prefsBranch.getIntPref("lastTask")
 		};
 
 		paymoAPI.apikey = this.preferences.apikey;
 
 		if (!this.preferences.apikey.length)
 		{
-			this.tooltipTask.value = 'Please setup the API key and login data in Options!';
+			this.ttTask.value = 'Please setup the API key and login data in Options!';
 		}
-		this.tooltipTask.hidden = (this.preferences.apikey.length > 0);
+		this.ttTask.hidden = (this.preferences.apikey.length > 0);
 
 		return true;
 	},
+
+	savePreferences: function(prefs)
+	{
+		for (var k in prefs)
+		{
+			if (typeof(prefs[k]) == 'string')
+				this.prefsBranch.setCharPref(k, prefs[k]);
+
+			if (typeof(prefs[k]) == 'number')
+				this.prefsBranch.setIntPref(k, prefs[k]);
+
+			if (typeof(prefs[k]) == 'boolean')
+				this.prefsBranch.setBoolPref(k, prefs[k]);
+		}
+	},
+
 
 
 	onClickOptions: function()
@@ -136,6 +163,8 @@ var paymott =
 
 	onClickLogin: function()
 	{
+		this.log('onClickLogin()');
+
 		var password = paymottPassword.get(this.preferences.username);
 
 		this.showStatus('Logging in ...');
@@ -148,12 +177,12 @@ var paymott =
 		this.log('doLogin()');
 
 		this.statusPanel.contextMenu = 'paymott-menupopup-projects';
-		this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
+		this.statusPanel.image = 'chrome://paymott/skin/clock-inactive.png';
 
 		this.$('paymott-menuitem-loggedin').label = 'Logged in as: ' + this.preferences.username;
 
-		this.tooltipUser.hidden = false;
-		this.tooltipUsername.textContent = this.preferences.username;
+		this.ttUser.hidden = false;
+		this.ttUsername.textContent = this.preferences.username;
 
 		this.showStatus('Logged in as ' + this.preferences.username);
 
@@ -162,6 +191,8 @@ var paymott =
 
 	onClickLogout: function()
 	{
+		this.log('onClickLogout()');
+
 		if (this.active)
 			this.onClickStop();
 
@@ -170,11 +201,12 @@ var paymott =
 		this.statusPanel.contextMenu = 'paymott-menupopup-logout';
 		this.statusPanel.image = 'chrome://paymott/skin/paymo-bw-16x16.png';
 
-		this.tooltipUser.hidden = true;
-		this.tooltipTask.hidden = true;
+		this.ttUser.hidden = true;
+		this.ttTask.hidden = true;
 
-		this.menuitemStop.disabled = true;
-		this.menuitemStart.disabled = true;
+		this.miStop.disabled = true;
+		this.miPause.disabled = true;
+		this.miStart.disabled = true;
 	},
 
 	doLogout: function()
@@ -190,7 +222,9 @@ var paymott =
 
 	doProjects: function(projects)
 	{
-		this.log('doProjects()');
+		this.log('doProjects() - lastTask: ' + this.preferences.lastTask);
+
+		this.activeTask = null;
 
 		var items = this.popupProjects.children;
 		if (items.length > 6)
@@ -223,28 +257,35 @@ var paymott =
 						child.setAttribute('label', project['name'] + ': ' + task['name']);
 						child.setAttribute('type', 'radio');
 						child.setAttribute('id', 'task-' + task['id']);
-						child.addEventListener('command', function(e){ paymott.onClickTaskItem(e) }, false);
+						child.addEventListener('click', function(e){ paymott.onClickTaskItem(e) }, false);
 						this.popupProjects.appendChild(child);
+
+						if (this.preferences.rememberTask && (task['id'] == this.preferences.lastTask))
+						{
+							child.setAttribute('checked', true);
+							child.click();
+						}
 					}
 				}
 			}
 		}
 
-		this.tooltipTask.hidden = true;
+		this.ttTask.hidden = true;
 	},
 
 	onClickTaskItem: function(event)
 	{
-		this.log('onClickTaskItem()');
+		this.activeTask = [parseInt(event.target.id.split('-')[1]), event.target.getAttribute('label')];
 
-		this.activeTask = [parseInt(event.target.id.split('-')[1]), event.target.label];
+		this.ttTask.hidden = false;
 
-		this.tooltipTask.hidden = false;
-
-		this.menuitemStop.disabled = true;
-		this.menuitemStart.disabled = false;
+		this.miStop.disabled = true;
+		this.miPause.disabled = true;
+		this.miStart.disabled = false;
 	
 		this.showStatus('Active task: ' + this.activeTask[1]);
+
+		this.savePreferences({ lastTask: this.activeTask[0] });
 
 		if (this.preferences.panelShow && this.preferences.panelFormat.match(/%p/))
 		{
@@ -257,6 +298,7 @@ var paymott =
 		this.active = true;
 
 		this.timeStart = new Date();
+		this.secondsPaused = 0;
 
 		this.statusPanel.image = 'chrome://paymott/skin/clock-active-1.png';
 		if (this.preferences.panelShow)
@@ -264,27 +306,64 @@ var paymott =
 			this.showPanelText(this.getPanelText());
 		}
 
-		this.menuitemStop.disabled = false;
-		this.menuitemStart.disabled = true;
+		this.miStop.disabled = false;
+		this.miPause.disabled = false;
+		this.miStart.disabled = true;
 
 		this.iconIndex = 1;
 		this.timerTime.init(paymottTimer, 1000, Ci.nsITimer.TYPE_REPEATING_PRECISE);
 	},
 
+	onClickPause: function(stop)
+	{
+		this.paused = !this.paused;
+
+		if (this.paused)
+		{
+			this.timePaused = new Date();
+
+			this.miPause.label = 'Resume';
+
+			this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
+
+			this.timerTime.cancel();
+
+			this.onTimerIcon();
+		}
+		else
+		{
+			this.secondsPaused += paymottDate.diffSeconds(this.timePaused, new Date());
+
+			this.miPause.label = 'Pause';
+
+			if (!stop)
+			{
+				this.statusPanel.image = 'chrome://paymott/skin/clock-active-1.png';
+
+				this.timerTime.init(paymottTimer, 1000, Ci.nsITimer.TYPE_REPEATING_PRECISE);
+			}
+		}
+	},
+
 	onClickStop: function()
 	{
+		if (this.paused)
+			this.onClickPause(true);
+
 		this.active = false;
 
 		this.showStatus('Recording time ...');
 
 		this.timeEnd = new Date();
+		this.timeEnd = new Date(this.timeEnd.getTime() - this.secondsPaused * 1000);
 
 		paymoAPI.timeAdd(this.timeStart, this.timeEnd, this.preferences.timeDescription);
 
-		this.statusPanel.image = 'chrome://paymott/skin/clock-paused.png';
+		this.statusPanel.image = 'chrome://paymott/skin/clock-inactive.png';
 
-		this.menuitemStop.disabled = true;
-		this.menuitemStart.disabled = false;
+		this.miStop.disabled = true;
+		this.miPause.disabled = true;
+		this.miStart.disabled = false;
 
 		this.timerTime.cancel();
 
@@ -294,15 +373,28 @@ var paymott =
 		}
 	},
 
+
+	onPanelClick: function(event)
+	{
+		if (event.button != 0)
+			return;
+	
+		if (this.activeTask == null)
+			return;
+
+		this.active ? this.onClickStop() : this.onClickStart();
+	},
+
+
 	doTimeAdd: function()
 	{
-		var diff = this.timeDiff(this.timeStart, this.timeEnd, true);
+		var diff = this.timeDiff(this.timeStart, this.timeEnd, 0, true);
 		this.showStatus('Time recorded: ' + diff);
 	},
 	
 	onTimerIcon: function()
 	{
-		if (this.preferences.iconAnimate)
+		if (this.preferences.iconAnimate && !this.paused)
 		{
 			this.iconIndex++;
 			if (this.iconIndex > 8)
@@ -325,9 +417,17 @@ var paymott =
 
 		if (this.active)
 		{
-			var diff = this.timeDiff(this.timeStart, new Date(), true);
-			t = t.replace('%s', diff);
-			t = t.replace('%t', diff.substr(0, 5));
+			if (!this.paused)
+			{
+				var diff = this.timeDiff(this.timeStart, new Date(), this.secondsPaused - 1, true);
+				t = t.replace('%s', diff);
+				t = t.replace('%t', diff.substr(0, 5));
+			}
+			else
+			{
+				t = t.replace('%s', 'PAUSED');
+				t = t.replace('%t', 'PAUSED');
+			}
 		}
 
 		return t;
@@ -338,15 +438,20 @@ var paymott =
 		if (!this.initialized)
 			return;
 
-		this.tooltipTime.hidden = !this.active;
+		this.ttTime.hidden = !this.active;
 
 		if (this.activeTask)
 		{
-			this.tooltipTask.value = this.activeTask[1];
+			this.ttTask.value = this.activeTask[1];
 		}
 		if (this.active)
 		{
-			this.tooltipDiff.textContent = this.timeDiff(this.timeStart, new Date(), true);
+			var secPaused = this.secondsPaused;
+
+			if (this.paused)
+				secPaused += paymottDate.diffSeconds(this.timePaused, new Date());
+
+			this.ttDiff.textContent = this.timeDiff(this.timeStart, new Date(), secPaused, true);
 		}
 	},
 
@@ -385,9 +490,9 @@ var paymott =
 		paymottUtils.log(msg);
 	},
 
-	timeDiff: function(start, end, seconds)
+	timeDiff: function(start, end, paused, seconds)
 	{
-		var ts = start.getTime(), te = end.getTime(), diff = Math.floor((te - ts) / 1000);
+		var diff = paymottDate.diffSeconds(start, end) - paused;
 
 		var h = Math.floor(diff / 3600);
 		diff = diff % 3600;
@@ -415,10 +520,10 @@ window.addEventListener("unload", function(){ paymott.onUnload() }, false);
 
 var paymottTimer =
 {
-	notify: function(timer){
+	notify: function(){
 		paymott.onLoadAfter();
 	},
-	observe: function(subject, topic, data){
+	observe: function(){
 		paymott.onTimerIcon();
 	}
 };

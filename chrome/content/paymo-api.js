@@ -13,7 +13,7 @@
 
 	The Initial Developer of the Original Code is Valentin Agachi, http://agachi.name/
 
-	Copyright (C) 2010, Valentin Agachi. All Rights Reserved.
+	Copyright (C) 2010-2011, Valentin Agachi. All Rights Reserved.
 */
 
 var paymoAPI =

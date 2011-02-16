@@ -104,5 +104,11 @@ var paymottDate =
 		return mask.replace(token, function ($0) {
 			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
 		});
+	},
+
+	diffSeconds: function(start, end)
+	{
+		var ts = start.getTime(), te = end.getTime(), diff = Math.floor((te - ts) / 1000);
+		return diff;
 	}
 };

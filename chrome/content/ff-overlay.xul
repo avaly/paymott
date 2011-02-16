@@ -26,6 +26,7 @@
 
 		<menupopup id="paymott-menupopup-actions">
 			<menuitem id="paymott-menuitem-stop" label="Stop" oncommand="paymott.onClickStop()" disabled="true"/>
+			<menuitem id="paymott-menuitem-pause" label="Pause" oncommand="paymott.onClickPause()" disabled="true"/>
 			<menuitem id="paymott-menuitem-start" label="Start" oncommand="paymott.onClickStart()" disabled="true"/>
 		</menupopup>
 

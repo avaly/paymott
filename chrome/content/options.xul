@@ -13,13 +13,16 @@
 		<preference id="panelShow1" name="extensions.paymott.panelShow" type="bool"/>
 		<preference id="panelFormat1" name="extensions.paymott.panelFormat" type="string"/>
 		<preference id="iconAnimate1" name="extensions.paymott.iconAnimate" type="bool"/>
-		<preference id="timedescription1" name="extensions.paymott.timedescription" type="string"/>
+		<preference id="rememberTask" name="extensions.paymott.rememberTask" type="bool"/>
+		<preference id="fastStart" name="extensions.paymott.fastStart" type="bool"/>
+		<preference id="timeDescription1" name="extensions.paymott.timeDescription" type="string"/>
 	</preferences>
 
 	<tabbox>
 		<tabs>
 			<tab label="Authentication"/>
 			<tab label="Display"/>
+			<tab label="Misc"/>
 		</tabs>
 		<tabpanels>
 			<tabpanel id="paymott-tabpanel-auth" orient="vertical">
@@ -42,11 +45,6 @@
 
 				<vbox>
 					<checkbox id="autoLogin-input" preference="autoLogin1" label="Login automatically on browser start"/>
-				</vbox>
-
-				<vbox>
-					<label accesskey="D" control="timedescription-input">Time description set in the timesheet</label>
-					<textbox id="timedescription-input" preference="timedescription1"/>
 				</vbox>
 
 				<vbox>
@@ -74,6 +72,23 @@
 					<description>%s = Time in HH:MM:SS format</description>
 				</vbox>
 			
+			</tabpanel>
+
+			<tabpanel id="paymott-tabpanel-misc" orient="vertical">
+
+				<vbox>
+					<checkbox id="rememberTask-input" preference="rememberTask" label="Remember last selected task"/>
+				</vbox>
+
+				<vbox>
+					<checkbox id="fastStart-input" preference="fastStart" label="Fast starting/stoping of time tracking (left mouse click only)"/>
+				</vbox>
+
+				<vbox>
+					<label accesskey="D" control="timedescription-input">Time description set in the timesheet</label>
+					<textbox id="timedescription-input" preference="timeDescription1"/>
+				</vbox>
+
 			</tabpanel>
 		</tabpanels>
 	</tabbox>
