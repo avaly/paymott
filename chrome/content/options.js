@@ -18,6 +18,7 @@
 
 var paymottOptions =
 {
+
 	onLoad: function()
 	{
 		paymottUtils.log('Options.onLoad()');
@@ -34,12 +35,27 @@ var paymottOptions =
 	{
 		paymottUtils.log('Options.onDialogAccept()');
 
-		var username = this.$('username-input').value;
-		var password = this.$('password-input').value;
-
-		paymottPassword.add(username, password);
+		this.save();
 
 		return true;
+	},
+
+	onUnload: function(a)
+	{
+		paymottUtils.log('Options.onUnload()');
+
+		if (paymottUtils.instant)
+			this.save();
+
+		return true;
+	},
+
+	save: function()
+	{
+		var username = this.$('username-input').value,
+			password = this.$('password-input').value;
+
+		paymottPassword.add(username, password);
 	},
 
 	$: function(id){

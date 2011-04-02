@@ -19,4 +19,4 @@ CHANGELOG
 * 1.3.4 - 2010-10-19: code changes required for Mozilla Add-ons approval
 * 1.3.5 - 2010-12-21: API requests made with HTTPS
 * 1.4.0 - 2011-02-16: NEW: pause time tracking, remember last task, fast starting/stoping of time tracking / FIXED: time description
-			
+* 1.4.1 - 2011-04-02: FIX: password not saved on Options dialog on Mac OS

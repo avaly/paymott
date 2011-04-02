@@ -20,15 +20,16 @@ var paymottUtils =
 {
 	sConsole: null,
 	debug: false,
+	instant: null,
 
 	onLoad: function()
 	{
 		this.sConsole = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 
 		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-		prefs = prefs.getBranch("extensions.paymott.");
 
-		this.debug = prefs.getBoolPref("debug");
+		this.debug = prefs.getBranch("extensions.paymott.").getBoolPref("debug");
+		this.instant = prefs.getBranch('browser.preferences.').getBoolPref('instantApply');
 	},
 
 	log: function(msg)
