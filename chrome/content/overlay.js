@@ -18,7 +18,7 @@
 
 var paymott =
 {
-	version: '1.4.0',
+	version: '@VERSION@',
 	initialized: false,
 	prefsBranch: null,
 	preferences: {},

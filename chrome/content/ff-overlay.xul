@@ -20,7 +20,7 @@
 			<menuitem id="paymott-menuitem-logout" label="Logout" oncommand="paymott.onClickLogout()"/>
 			<menuseparator/>
 			<menuitem label="Options" oncommand="paymott.onClickOptions()"/>
-			<menuitem id="paymott-menuitem-refresh" label="Refresh projects" oncommand="paymott.onClickRefresh()"/>
+			<menuitem id="paymott-menuitem-refresh" label="Refresh tasks" oncommand="paymott.onClickRefresh()"/>
 			<menuseparator/>
 		</menupopup>
 

@@ -2,7 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://paymott/skin/overlay.css" type="text/css"?>
 <!DOCTYPE prefwindow SYSTEM "chrome://paymott/locale/overlay.dtd">
-<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker preferences" width="450" height="340" ondialogaccept="return paymottOptions.onDialogAccept(this)" onunload="return paymottOptions.onUnload(this)">
+<prefwindow id="paymott-preferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="Paymo Time Tracker @VERSION@ preferences" width="450" height="340" ondialogaccept="return paymottOptions.onDialogAccept(this)" onunload="return paymottOptions.onUnload(this)">
 
   <prefpane id="pane1" label="Paymo Time Tracker preferences">
 
