@@ -253,6 +253,8 @@ var paymott =
 					{
 						var task = tasks[k];
 
+						if (task['complete'] == 1) continue;
+
 						var child = document.createElement('menuitem');
 						child.setAttribute('label', project['name'] + ': ' + task['name']);
 						child.setAttribute('type', 'radio');
