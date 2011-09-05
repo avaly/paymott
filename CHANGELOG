@@ -11,3 +11,4 @@ CHANGELOG
 * 1.4.1 - 2011-04-02: FIX: password not saved on Options dialog on Mac OS
 * 1.4.2 - 2011-04-28: Enabled add-on for upcoming Firefox 5
 * 1.4.3 - 2011-06-19: FIX: hide completed tasks
+* 1.4.4 - 2011-09-05: Increased add-on compatiblity up to Firefox 8
