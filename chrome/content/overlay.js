@@ -51,9 +51,6 @@ var paymott =
 	onLoad: function()
 	{
 		this.strings = document.getElementById("paymott-strings");
-
-		var timerInit = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
-		timerInit.initWithCallback(paymottTimer, 1000, Ci.nsITimer.TYPE_ONE_SHOT);
 	},
 
 	onUnload: function()
@@ -516,8 +513,6 @@ var paymott =
 	}
 };
 
-window.addEventListener("load", function(){ paymott.onLoad() }, false);
-window.addEventListener("unload", function(){ paymott.onUnload() }, false);
 
 
 var paymottTimer =
@@ -529,6 +524,7 @@ var paymottTimer =
 		paymott.onTimerIcon();
 	}
 };
+
 
 
 var paymottPreferencesObserver =
@@ -554,4 +550,17 @@ var paymottPreferencesObserver =
 		paymott.loadPreferences();
 	}
 };
+
+
+
+// this doesn't always trigger on some configurations
+//window.addEventListener("load", function(){ paymott.onLoad() }, false);
+
+// onLoad workaround - fire after 10 seconds
+var timerInit = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+timerInit.initWithCallback(paymottTimer, 10000, Ci.nsITimer.TYPE_ONE_SHOT);
+
+
+window.addEventListener("unload", function(){ paymott.onUnload() }, false);
+
 
