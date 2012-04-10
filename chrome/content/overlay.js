@@ -27,14 +27,14 @@ var paymott =
 
 	miStop: null,
 	miStart: null,
-	
+
 	ttDefault: null,
 	ttUser: null,
 	ttUsername: null,
 	ttTask: null,
 	ttTime: null,
 	ttDiff: null,
-	
+
 	activeTask: null,
 	active: false,
 	paused: false,
@@ -47,6 +47,7 @@ var paymott =
 
 	timerTime: null,
 	timerStatus: null,
+	timerInit: null,
 
 	onLoad: function()
 	{
@@ -58,11 +59,14 @@ var paymott =
 		if (this.active)
 			this.onClickStop();
 	},
-	
+
 	onLoadAfter: function()
 	{
-		this.timerTime = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
-		this.timerStatus = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
+		if (this.initialized)
+			return;
+
+		this.timerTime = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+		this.timerStatus = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
 
 		this.statusPanel = this.$('paymott-statuspanel');
 
@@ -107,7 +111,7 @@ var paymott =
 
 		// TODO load dynamically paymo-api.js, date.js
 	},
-	
+
 	loadPreferences: function()
 	{
 		this.log('loadPreferences()');
@@ -281,7 +285,7 @@ var paymott =
 		this.miStop.disabled = true;
 		this.miPause.disabled = true;
 		this.miStart.disabled = false;
-	
+
 		this.showStatus('Active task: ' + this.activeTask[1]);
 
 		this.savePreferences({ lastTask: this.activeTask[0] });
@@ -375,9 +379,12 @@ var paymott =
 
 	onPanelClick: function(event)
 	{
+		if (!this.initialized)
+			this.onLoadAfter();
+
 		if (event.button != 0)
 			return;
-	
+
 		if (this.activeTask == null)
 			return;
 
@@ -390,7 +397,7 @@ var paymott =
 		var diff = this.timeDiff(this.timeStart, this.timeEnd, 0, true);
 		this.showStatus('Time recorded: ' + diff);
 	},
-	
+
 	onTimerIcon: function()
 	{
 		if (this.preferences.iconAnimate && !this.paused)
@@ -407,7 +414,7 @@ var paymott =
 			this.showPanelText(this.panelText);
 		}
 	},
-	
+
 	getPanelText: function(f)
 	{
 		var t = (f ? f : this.preferences.panelFormat);
@@ -435,7 +442,7 @@ var paymott =
 	onTooltipShow: function()
 	{
 		if (!this.initialized)
-			return;
+			this.onLoadAfter();
 
 		this.ttTime.hidden = !this.active;
 
@@ -456,6 +463,9 @@ var paymott =
 
 	showStatus: function(msg)
 	{
+		if (!this.initialized)
+			this.onLoadAfter();
+
 		this.showPanelText(msg);
 
 		this.timerStatus.cancel();
@@ -468,15 +478,21 @@ var paymott =
 
 		this.timerStatus.initWithCallback(_event, 3000, Ci.nsITimer.TYPE_ONE_SHOT);
 	},
-	
+
 	showPanelText: function(msg)
 	{
+		if (!this.initialized)
+			this.onLoadAfter();
+
 		this.statusPanel.className = 'statusbarpanel-iconic-text';
 		this.statusPanel.label = msg;
 	},
 
 	clearPanelText: function()
 	{
+		if (!this.initialized)
+			this.onLoadAfter();
+
 		if (!this.panelText.length)
 		{
 			this.statusPanel.className = 'statusbarpanel-iconic';
@@ -557,8 +573,8 @@ var paymottPreferencesObserver =
 //window.addEventListener("load", function(){ paymott.onLoad() }, false);
 
 // onLoad workaround - fire after 10 seconds
-var timerInit = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);  
-timerInit.initWithCallback(paymottTimer, 10000, Ci.nsITimer.TYPE_ONE_SHOT);
+paymott.timerInit = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+paymott.timerInit.initWithCallback(paymottTimer, 10000, Ci.nsITimer.TYPE_ONE_SHOT);
 
 
 window.addEventListener("unload", function(){ paymott.onUnload() }, false);

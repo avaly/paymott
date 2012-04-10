@@ -13,3 +13,4 @@ CHANGELOG
 * 1.4.3 - 2011-06-19: FIX: hide completed tasks
 * 1.4.4 - 2011-09-05: Increased add-on compatiblity up to Firefox 8
 * 1.4.5 - 2012-04-02: FIX: sometimes onLoadAfter() did not fire
+* 1.4.6 - 2012-04-10: Code changes required for Mozilla Add-ons approval
