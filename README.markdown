@@ -1,5 +1,7 @@
 # Paymo.biz Time Tracker
 
+[![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=avaly&url=https://github.com/avaly/paymott&title=Paymo+Time+Tracker&language=&tags=github&category=software)
+
 Paymo.biz Time Tracker is a Firefox add-on plugin that helps with tracking your time using the [paymo.biz](http://www.paymo.biz/) API.
 
 Before using this plugin, you'll need to set your API key, username and password in plugin's Options.
